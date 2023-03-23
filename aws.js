@@ -127,6 +127,8 @@ function getHashedCanonicalRequest(method, canonicalPath, signedHeaders, headers
  * @param {String} path (set to / if unsure)
  * @param {String} querystring (default null)
  * @param {String|Buffer} postdata (default null)
+ * @param {Object} extraHeaders (default {})
+ * @param {Array} extraSignedHeaders (default [])
  * @returns 
  */
 function request(

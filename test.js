@@ -56,24 +56,3 @@ ${signature}
 
 console.log('==================================================================================');
 
-// console.log(`
-// REAL CanonicalRequest:
-// POST
-// /
-
-// content-type:application/x-www-form-urlencoded; charset=utf-8
-// host:localhost:8080
-// x-amz-date:20230322T225509Z
-
-// content-type;host;x-amz-date
-// ac0520ef86a45f5da1de9341d831f94d3f6b9b2c48c5986c76fd8d933c1e27df
-
-// REAL StringToSign:
-// AWS4-HMAC-SHA256
-// 20230322T225509Z
-// 20230322/us-east-1/sns/aws4_request
-// 145f884cdd7ac756f7cd34526cbbfa076e9b589241b247b094d083064ae66296
-
-// REAL Signature:
-// 3689c521966cae48ad79d391e5d80891268e8f9c77f0d17f840a92f648ee7f71
-// `);

@@ -12,6 +12,3 @@ test-test:
 
 test-sqs-retrieve-message:
 	set -a && . .env && set +a && node sqs-receive-message.js
-
-test-sqs-delete-message:
-	set -a && . .env && set +a && node sqs-delete-message.js
