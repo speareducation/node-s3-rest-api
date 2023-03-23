@@ -120,6 +120,19 @@ function getHashedCanonicalRequest(method, canonicalPath, signedHeaders, headers
 }
 
 /**
+ * Serializes an object into a urlencoded parameter string
+ * @param {Object} params 
+ * @returns 
+ */
+function objectToFormString(params) {
+    const formStringParts = [];
+    for (const key in params) {
+        formStringParts.push(key + '=' + encodeURIComponent(params[key]));
+    }
+    return formStringParts.join('&');
+}
+
+/**
  * Sends a request to AWS (from S3 authorization flow)
  * @param {String} service (sns, s3, etc.)
  * @param {String} endpoint (protocol + domain)
@@ -195,10 +208,10 @@ function request(
         request.data = postdata;
     }
 
-    DEBUG && console.log(JSON.stringify(request, null, 2));
+    // DEBUG && console.log(JSON.stringify(request, null, 2));
 
     // return new Promise((resolve) => resolve());
     return https(request);
 }
 
-module.exports = { hash, hmacSha256, sha256, md5, request, createSigningKey, getSignature, getHashedCanonicalRequest };
+module.exports = { hash, hmacSha256, sha256, md5, request, createSigningKey, getSignature, getHashedCanonicalRequest, objectToFormString };

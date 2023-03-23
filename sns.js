@@ -1,18 +1,18 @@
-const { request } = require('./aws');
+const { request, objectToFormString } = require('./aws');
 
 const AWS_REGION = 'us-east-1';
 
 const VERSION = '2010-03-31';
 
 function publish(topicArn, groupId, uniqueId, message) {
-    const postdata = [
-        'Action=Publish',
-        'Version=' + VERSION,
-        'TopicArn=' + encodeURIComponent(topicArn),
-        'Message=' + encodeURIComponent(message),
-        'MessageGroupId=' + encodeURIComponent(groupId),
-        'MessageDeduplicationId=' + encodeURIComponent(uniqueId),
-    ].join('&');
+    const postdata = objectToFormString({
+        Action: 'Publish',
+        Version: VERSION,
+        TopicArn: topicArn,
+        Message: message,
+        MessageGroupId: groupId,
+        MessageDeduplicationId: uniqueId,
+    });
 
     process.env.DEBUG && console.log('PostData:', postdata);
 
@@ -25,7 +25,7 @@ function publish(topicArn, groupId, uniqueId, message) {
         postdata,
         { 'content-type': 'application/x-www-form-urlencoded; charset=utf-8' },
         ['content-type'],
-    );
+    ).then(r => r.data);
 }
 
 module.exports = { publish };

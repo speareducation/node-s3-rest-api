@@ -57,7 +57,7 @@ cp .env.example .env
 ```
 Then, edit the `.env` file in the project's root directory with the access key ID and Secret.
 
-Now, you can run the tests in the `Makefile` with the `make` command. Example: `make test-s3-get-object`
+Now, you can run the tests directly with `node`. Example: `node test-s3-get-object.js`
 
 
 ## References

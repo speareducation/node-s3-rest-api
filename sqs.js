@@ -1,20 +1,20 @@
-const { request } = require('./aws');
+const { request, objectToFormString } = require('./aws');
 
 const AWS_REGION = 'us-east-1';
 
 const VERSION = '2012-11-05';
 
 /** @url https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_ReceiveMessage.html */
-function receiveMessage(queueUrl, maxNumberOfMessages) {
-    const postdata = [
-        'Action=ReceiveMessage',
-        'Version=' + VERSION,
-        'QueueUrl=' + encodeURIComponent(queueUrl),
-        'MaxNumberOfMessages=' + encodeURIComponent(maxNumberOfMessages),
-        'VisibilityTimeout=60', // the time (seconds) NS needs to process the request. If this lapses without a DeleteMessage, the item in the queue will become available again.
-        'WaitTimeSeconds=1', // the amount of time to wait for messages when the queue is empty
-        // ...etc.
-    ].join('&');
+function receiveMessage(queueUrl, params = {}) {
+    const postdata = objectToFormString({
+        Action: 'ReceiveMessage',
+        Version: VERSION,
+        QueueUrl: queueUrl,
+        MaxNumberOfMessages: 1,
+        VisibilityTimeout: 60, // the time (seconds) NS needs to process the request. If this lapses without a DeleteMessage, the item in the queue will become available again.
+        WaitTimeSeconds: 1, // the amount of time to wait for messages when the queue is empty
+        ...params,
+    });
 
     process.env.DEBUG && console.log('PostData:', postdata);
 
@@ -27,18 +27,18 @@ function receiveMessage(queueUrl, maxNumberOfMessages) {
         postdata,
         { 'content-type': 'application/x-www-form-urlencoded; charset=utf-8' },
         ['content-type'],
-    );
+    ).then(r => r.data);
 }
 
 /** @url https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_ReceiveMessage.html */
 function deleteMessage(queueUrl, receiptHandle) {
-    const postdata = [
-        'Action=DeleteMessage',
-        'Version=' + VERSION,
-        'QueueUrl=' + encodeURIComponent(queueUrl),
-        'ReceiptHandle=' + encodeURIComponent(receiptHandle),
+    const postdata = objectToFormString({
+        Action: 'DeleteMessage',
+        Version: VERSION,
+        QueueUrl: queueUrl,
+        ReceiptHandle: receiptHandle,
         // ...etc.
-    ].join('&');
+    });
 
     process.env.DEBUG && console.log('PostData:', postdata);
 
@@ -51,7 +51,7 @@ function deleteMessage(queueUrl, receiptHandle) {
         postdata,
         { 'content-type': 'application/x-www-form-urlencoded; charset=utf-8' },
         ['content-type'],
-    );
+    ).then(r => r.data);
 }
 
 module.exports = { receiveMessage, deleteMessage };
