@@ -2,10 +2,12 @@ const { request } = require('./aws');
 
 const AWS_REGION = 'us-east-1';
 
+const VERSION = '2010-03-31';
+
 function publish(topicArn, groupId, uniqueId, message) {
     const postdata = [
         'Action=Publish',
-        'Version=2010-03-31',
+        'Version=' + VERSION,
         'TopicArn=' + encodeURIComponent(topicArn),
         'Message=' + encodeURIComponent(message),
         'MessageGroupId=' + encodeURIComponent(groupId),

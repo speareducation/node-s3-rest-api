@@ -12,7 +12,7 @@ const topicArn = 'arn:aws:sns:us-east-1:009255884135:test-fifo-topic.fifo';
 
 const transactionTimestamp = 1679498517594; // Date.now();
 const groupId = 'jason-test'; // all items within a group are executed in order
-const uniqueId = 'jason-test-1'; // ensures uniqueness. maybe also include transaction timestamp (for updates)
+const uniqueId = 'jason-test-2'; // ensures uniqueness. maybe also include transaction timestamp (for updates)
 const message = {
     timestamp: transactionTimestamp,
     operation: "test",
@@ -22,6 +22,6 @@ const message = {
     }
 };
 
-sns.publish(topicArn, groupId, uniqueId, 'test message')
-    .then(r => console.log(r))
+sns.publish(topicArn, groupId, uniqueId, JSON.stringify(message))
+    .then(r => console.log(r.data))
     .catch(e => console.error(e.response))

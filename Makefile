@@ -9,3 +9,9 @@ test-s3-put-object:
 
 test-test:
 	set -a && . .env && set +a && node test.js
+
+test-sqs-retrieve-message:
+	set -a && . .env && set +a && node sqs-receive-message.js
+
+test-sqs-delete-message:
+	set -a && . .env && set +a && node sqs-delete-message.js
