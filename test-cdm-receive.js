@@ -9,7 +9,7 @@ async function handle() {
     let sqsRsp;
     try {
         sqsRsp = await sqs.receiveMessage(sqsQueueUrl, {
-            WaitTimeSeconds: 10,
+            WaitTimeSeconds: 20, // 20s is maximum
             VisibilityTimeout: 5,
         });
     } catch (e) {
@@ -48,5 +48,9 @@ async function handle() {
 
 }
 
-handle()
-    .catch(e => console.error(e));
+async function loop() {
+    while (true) {
+        await handle();
+    }
+}
+loop();

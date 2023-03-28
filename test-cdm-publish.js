@@ -6,7 +6,7 @@ const snsTopicArn = 'arn:aws:sns:us-east-1:009255884135:sns-cdm-dev.fifo';
 
 async function handle() {
 
-    const source = 'netsuite';
+    const source = 'core';
     const operation = 'update';
     const target = 'person';
     const person = {
@@ -14,6 +14,7 @@ async function handle() {
         firstName: 'Jason',
         lastName: 'Wright',
         email: 'jwright@speareducation.com',
+        updatedAt: new Date().toJSON(),
     };
 
     const groupId = source + '-' + operation;
@@ -22,6 +23,7 @@ async function handle() {
     const cdmEvent = {
         eventHeader: {
             timestamp: Date.now(),
+            source: source,
             transactionId: groupId + '-' + uniqueId,
             operation: operation,
             target: target,
@@ -33,6 +35,7 @@ async function handle() {
 
     // PUSH Change: send an update to SNS
     try {
+        console.log('PUBLISH', JSON.stringify(cdmEvent, null, 2));
         const rsp = await sns.publish(snsTopicArn, groupId, uniqueId, JSON.stringify(cdmEvent));
         console.log(rsp);
     } catch (e) {
