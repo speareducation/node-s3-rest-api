@@ -6,7 +6,7 @@ const snsTopicArn = 'arn:aws:sns:us-east-1:009255884135:sns-cdm-dev.fifo';
 
 async function handle() {
 
-    const source = 'core';
+    const source = 'core'; // DEMO only! This will actually be set to "netsuite" if being sent FROM netsuite.
     const operation = 'update';
     const target = 'person';
     const person = {
@@ -35,7 +35,9 @@ async function handle() {
 
     // PUSH Change: send an update to SNS
     try {
-        console.log('PUBLISH', JSON.stringify(cdmEvent, null, 2));
+        console.log('PUBLISH');
+        console.log({ groupId, uniqueId });
+        console.log(JSON.stringify(cdmEvent, null, 2));
         const rsp = await sns.publish(snsTopicArn, groupId, uniqueId, JSON.stringify(cdmEvent));
         console.log(rsp);
     } catch (e) {
